@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Şans Çarkı</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/zarocknz/javascript-winwheel/Winwheel.min.js"></script>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            margin-top: 20px;
+        }
+        #rewardTxt {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            display: inline-block;
+            border-radius: 10px;
+        }
+        .spinWheelBtn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .spinWheelBtn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Şans Çarkı</h2>
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <br>
+    <button class="spinWheelBtn" onclick="startSpin()">Çarkı Çevir</button>
+
+    <div id="rewardTxt" style="display:none;"></div>
+
+    <script>
+        var items = [
+            { 'text': '%10 Alan Adı İndirimi', 'fillStyle': '#38A0E6' },
+            { 'text': '%20 Hosting İndirimi', 'fillStyle': '#FCA628' },
+            { 'text': 'Bedava Bireysel Hosting', 'fillStyle': '#E65051' },
+            { 'text': '25 TL', 'fillStyle': '#D787FF' },
+            { 'text': '100₺ Apple Hediye Kodu', 'fillStyle': '#E65051' },
+            { 'text': '50 TL', 'fillStyle': '#38A0E6' },
+            { 'text': 'Bedava Domain', 'fillStyle': '#FCA628' },
+            { 'text': '100 TL', 'fillStyle': '#2FAF74' },
+            { 'text': '500 TL', 'fillStyle': '#D787FF' },
+            { 'text': '100₺ Google Hediye Kodu', 'fillStyle': '#2FAF74' },
+            { 'text': '100₺ Amazon Hediye Kodu', 'fillStyle': '#FCA628' },
+            { 'text': '10$ Steam Hediye Kodu', 'fillStyle': '#D787FF' },
+            { 'text': 'Kazanamadınız :(', 'fillStyle': '#E65051' }
+        ];
+
+        var theWheel = new Winwheel({
+            'canvasId': 'canvas',
+            'numSegments': items.length,
+            'outerRadius': 200,
+            'innerRadius': 50,
+            'textFontSize': 14,
+            'textMargin': 0,
+            'textAlignment': 'outer',
+            'segments': items,
+            'animation': {
+                'type': 'spinToStop',
+                'duration': 5,
+                'spins': 10,
+                'callbackFinished': 'showResult()'
+            },
+            'pins': {
+                'number': items.length,
+                'fillStyle': 'white',
+                'outerRadius': 4,
+            }
+        });
+
+        var wheelSpinning = false;
+
+        function startSpin() {
+            if (!wheelSpinning) {
+                document.getElementById("rewardTxt").style.display = "none";
+                var stopAt = theWheel.getRandomForSegment(Math.floor(Math.random() * items.length) + 1);
+                theWheel.animation.stopAngle = stopAt;
+                theWheel.startAnimation();
+                wheelSpinning = true;
+            }
+        }
+
+        function showResult() {
+            var winningSegment = theWheel.getIndicatedSegment();
+            document.getElementById("rewardTxt").style.display = "block";
+
+            if (winningSegment.text.includes("Kazanamadınız")) {
+                document.getElementById("rewardTxt").style.backgroundColor = "brown";
+                document.getElementById("rewardTxt").innerHTML = "Üzgünüz, tekrar deneyin!";
+            } else {
+                document.getElementById("rewardTxt").style.backgroundColor = "green";
+                document.getElementById("rewardTxt").innerHTML = "Tebrikler! " + winningSegment.text;
+            }
+
+            wheelSpinning = false;
+        }
+    </script>
+
+</body>
+</html>
