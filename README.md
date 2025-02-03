@@ -20,11 +20,11 @@ This project creates a Lucky Wheel using JavaScript. Users can click the “Spin
 Follow these steps to run the project:
 	1.	Clone the repository
 ```
-git clone https://github.com/MucahitAkin/whell.git
-cd lucky-wheel
-```
+git clone https://github.com/Mucahitakin/Wheel.git
+cd Wheel
 
-	2.	Open the file in your browser
+```
+2.	Open the file in your browser
 ```
 index.html
 ```
